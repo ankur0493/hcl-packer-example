@@ -1,0 +1,53 @@
+{
+  "variables": {
+    "project_id": "weather-ml",
+    "zone": "us-central1-c",
+    "region": "us-central1",
+    "image_name": "dev-nvidia",
+    "source_image": "ubuntu-1804-bionic-v20200414",
+    "source_image_family": "ubuntu-1804-lts",
+    "disk_type": "pd-ssd",
+    "disk_size": "10",
+    "machine_type": "n1-standard-8",
+    "preemptible": "true",
+    "gpu_type": "nvidia-tesla-v100",
+    "gpu_count": "1",
+    "startup_script_file": "image-creation-startup.sh",
+    "service_account_email": "384840271550-compute@developer.gserviceaccount.com"
+  },
+  "builders": [
+    {
+      "type": "googlecompute",
+      "project_id": "{{user `project_id`}}",
+      "image_name": "{{user `image_name`}}",
+      "source_image": "{{user `source_image`}}",
+      "source_image_family": "{{user `source_image_family`}}",
+      "zone": "{{user `zone`}}",
+      "disk_type": "{{user `disk_type`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "machine_type": "{{user `machine_type`}}",
+      "preemptible": "{{user `preemptible`}}",
+      "accelerator_type": "https://www.googleapis.com/compute/v1/projects/{{user `project_id`}}/zones/{{user `zone`}}/acceleratorTypes/{{user `gpu_type`}}",
+      "accelerator_count": "{{user `gpu_count`}}",
+      "on_host_maintenance": "TERMINATE",
+      "state_timeout": "30m",
+      "region": "{{user `region`}}",
+      "scopes": [
+            "https://www.googleapis.com/auth/devstorage.read_write",
+            "https://www.googleapis.com/auth/logging.write",
+            "https://www.googleapis.com/auth/monitoring.write",
+            "https://www.googleapis.com/auth/servicecontrol",
+            "https://www.googleapis.com/auth/service.management.readonly",
+            "https://www.googleapis.com/auth/trace.append",
+            "https://www.googleapis.com/auth/cloudkms",
+            "https://www.googleapis.com/auth/compute"
+      ],
+      "service_account_email": "{{user `service_account_email`}}",
+      "ssh_username": "developer",
+      "startup_script_file": "{{user `startup_script_file`}}",
+      "metadata": {
+        "project_id": "{{user `project_id`}}"
+      }
+    }
+  ]
+}
